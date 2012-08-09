@@ -110,7 +110,7 @@ class opExecutionFilter extends sfExecutionFilter
           $actionInstance->redirect($baseUrl[sfConfig::get('sf_app')].$currentPath);
         }
       }
-      elseif (!in_array($moduleName.'/'.$actionName, $sslSelectableList[sfConfig::get('sf_app')]) && $request->isSecure())
+      elseif (!opConfig::isSslSelectableAction(sfConfig::get('sf_app'), $moduleName, $actionName) && $request->isSecure())
       {
         $baseUrl = sfConfig::get('op_base_url');
 
