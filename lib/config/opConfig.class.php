@@ -99,15 +99,15 @@ class opConfig extends sfConfig implements ArrayAccess
 
   public static function isSslRequiredAction($appName, $moduleName, $actionName)
   {
-      $sslRequiredList = sfConfig::get('op_ssl_required_actions', array($appName => array()));
+    $sslRequiredList = sfConfig::get('op_ssl_required_actions', array($appName => array()));
 
-      return in_array($moduleName.'/'.$actionName, $sslRequiredList[$appName]);
+    return in_array($moduleName.'/'.$actionName, $sslRequiredList[$appName]);
   }
 
   public static function isSslSelectableAction($appName, $moduleName, $actionName)
   {
-      $sslSelectableList = sfConfig::get('op_ssl_selectable_actions', array($appName => array()));
+    $sslSelectableList = sfConfig::get('op_ssl_selectable_actions', array($appName => array()));
 
-      return in_array($moduleName.'/'.$actionName, $sslSelectableList[$appName]);
+    return in_array($moduleName.'/'.$actionName, $sslSelectableList[$appName]);
   }
 }
