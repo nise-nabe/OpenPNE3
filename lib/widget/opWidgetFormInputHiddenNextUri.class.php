@@ -24,19 +24,23 @@ class opWidgetFormInputHiddenNextUri extends sfWidgetFormInputHidden
     $routing = sfContext::getInstance()->getRouting();
     $request = sfContext::getInstance()->getRequest();
 
-    $value = $routing->getCurrentInternalUri();
-    if ($_SERVER['QUERY_STRING'])
+    $value = $request['next_uri'];
+    if (false === $value)
     {
-      if (false !== strpos($value, '?'))
+      $value = $routing->getCurrentInternalUri();
+      if ($_SERVER['QUERY_STRING'])
       {
-        $value .= '&';
-      }
-      else
-      {
-        $value .= '?';
-      }
+        if (false !== strpos($value, '?'))
+        {
+          $value .= '&';
+        }
+        else
+        {
+          $value .= '?';
+        }
 
-      $value .= $_SERVER['QUERY_STRING'];
+        $value .= $_SERVER['QUERY_STRING'];
+      }
     }
 
     if ($request->isMethod(sfWebRequest::POST))

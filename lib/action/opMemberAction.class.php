@@ -78,6 +78,18 @@ abstract class opMemberAction extends sfActions
   {
     $this->getUser()->logout();
 
+    $app = sfConfig::get('sf_app');
+    if (opConfig::isSslRequiredAction($app, 'member', 'login') && !$request->isSecure())
+    {
+      $baseUrl = sfConfig::get('op_ssl_base_url');
+
+      $scriptName = basename($request->getScriptName());
+      $replacement = (false !== strpos($request->getPathInfoPrefix(), $scriptName)) ? '/'.$scriptName : '';
+      $currentPath = str_replace($request->getPathInfoPrefix(), $replacement, $request->getCurrentUri());
+
+      $this->redirect($baseUrl[$app].'member/login?next_uri='.urlencode($currentPath));
+    }
+
     $this->forms = $this->getUser()->getAuthForms();
 
     if ($request->hasParameter('authMode'))
