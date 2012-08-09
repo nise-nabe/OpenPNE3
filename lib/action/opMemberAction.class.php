@@ -79,7 +79,7 @@ abstract class opMemberAction extends sfActions
     $this->getUser()->logout();
 
     $app = sfConfig::get('sf_app');
-    if (opConfig::isSslRequiredAction($app, 'member', 'login') && !$request->isSecure())
+    if (opSslUtil::isRequiredAction($app, 'member', 'login') && !$request->isSecure())
     {
       $baseUrl = sfConfig::get('op_ssl_base_url');
 

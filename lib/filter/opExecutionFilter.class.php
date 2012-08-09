@@ -101,7 +101,7 @@ class opExecutionFilter extends sfExecutionFilter
           $actionInstance->redirect($baseUrl[sfConfig::get('sf_app')].$currentPath);
         }
       }
-      elseif (opConfig::isSslRequiredAction(sfConfig::get('sf_app'), $moduleName, $actionName))
+      elseif (opSslUtil::isRequiredAction(sfConfig::get('sf_app'), $moduleName, $actionName))
       {
         if (!$request->isSecure())
         {
@@ -110,7 +110,7 @@ class opExecutionFilter extends sfExecutionFilter
           $actionInstance->redirect($baseUrl[sfConfig::get('sf_app')].$currentPath);
         }
       }
-      elseif (!opConfig::isSslSelectableAction(sfConfig::get('sf_app'), $moduleName, $actionName) && $request->isSecure())
+      elseif (!opSslUtil::isSelectableAction(sfConfig::get('sf_app'), $moduleName, $actionName) && $request->isSecure())
       {
         $baseUrl = sfConfig::get('op_base_url');
 
