@@ -96,4 +96,11 @@ class opConfig extends sfConfig implements ArrayAccess
     // Nothing to do.
     // This class is a read-only.
   }
+
+  public static function isSslRequiredAction($appName, $moduleName, $actionName)
+  {
+      $sslRequiredList = sfConfig::get('op_ssl_required_actions', array($appName => array()));
+
+      return in_array($moduleName.'/'.$actionName, $sslRequiredList[$appName]);
+  }
 }
