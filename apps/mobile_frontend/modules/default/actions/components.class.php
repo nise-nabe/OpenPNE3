@@ -29,7 +29,7 @@ class defaultComponents extends sfComponents
 
   public function executeLoginFormBox()
   {
-    $this->forms = $this->getUser()->getAuthForms();
+    $this->forms = AuthAdapterRepository::getAuthForms();
   }
 
   public function executeHeaderGadgets()

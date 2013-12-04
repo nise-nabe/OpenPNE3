@@ -80,7 +80,7 @@ abstract class opMemberAction extends sfActions
 
     $this->redirectToLoginIfSslRequired($request);
 
-    $this->forms = $this->getUser()->getAuthForms();
+    $this->forms = AuthAdapterRepository::getAuthForms();
 
     if ($request->hasParameter('authMode'))
     {

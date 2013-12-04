@@ -17,9 +17,6 @@
  */
 abstract class opAdaptableUser extends opBaseSecurityUser
 {
-  protected
-    $authAdapters = array();
-
   /**
    * Initializes the current user.
    *
@@ -40,43 +37,7 @@ abstract class opAdaptableUser extends opBaseSecurityUser
       $this->setCurrentAuthMode($authMode);
     }
 
-    $this->createAuthAdapter($this->getCurrentAuthMode());
-  }
-
-  public function getAuthAdapters()
-  {
-    $adapters = array();
-    $plugins = sfContext::getInstance()->getConfiguration()->getEnabledAuthPlugin();
-
-    foreach ($plugins as $pluginName)
-    {
-      $endPoint = strlen($pluginName) - strlen('opAuth') - strlen('Plugin');
-      $authMode = substr($pluginName, strlen('opAuth'), $endPoint);
-      $adapterClass = self::getAuthAdapterClassName($authMode);
-      $adapters[$authMode] = new $adapterClass($authMode);
-    }
-
-    return $adapters;
-  }
-
-  public function getAuthModes()
-  {
-    $is_mobile = sfConfig::get('app_is_mobile', false);
-    $result = array();
-
-    $adapters = $this->getAuthAdapters();
-    foreach ($adapters as $authMode => $adapter)
-    {
-      if (($is_mobile && !$adapter->getAuthConfig('enable_mobile'))
-        || (!$is_mobile && !$adapter->getAuthConfig('enable_pc')))
-      {
-        continue;
-      }
-
-      $result[] = $authMode;
-    }
-
-    return $result;
+    AuthAdapterRepository::createAuthAdapter($this->getCurrentAuthMode());
   }
 
   public function getAuthAdapter($authMode = null)
@@ -86,18 +47,7 @@ abstract class opAdaptableUser extends opBaseSecurityUser
       $authMode = $this->getCurrentAuthMode();
     }
 
-    $this->createAuthAdapter($authMode);
-
-    return $this->authAdapters[$authMode];
-  }
-
-  public function createAuthAdapter($authMode)
-  {
-    if (empty($this->authAdapters[$authMode]))
-    {
-      $containerClass = self::getAuthAdapterClassName($authMode);
-      $this->authAdapters[$authMode] = new $containerClass($authMode);
-    }
+    return AuthAdapterRepository::createAuthAdapter($authMode);
   }
 
   public function getAuthForm()
@@ -105,37 +55,17 @@ abstract class opAdaptableUser extends opBaseSecurityUser
     return $this->getAuthAdapter()->getAuthForm();
   }
 
-  public function getAuthForms()
-  {
-    $result = array();
-
-    $authModes = $this->getAuthModes();
-    foreach ($authModes as $authMode)
-    {
-      $adapterClass = self::getAuthAdapterClassName($authMode);
-      $adapter = new $adapterClass($authMode);
-      $result[$authMode] = $adapter->getAuthForm();
-    }
-
-    return $result;
-  }
-
-  public static function getAuthAdapterClassName($authMode)
-  {
-    return 'opAuthAdapter'.ucfirst($authMode);
-  }
-
   public function setCurrentAuthMode($authMode)
   {
     $this->setAttribute('auth_mode', $authMode, 'opSecurityUser');
-    $this->createAuthAdapter($this->getCurrentAuthMode());
+    AuthAdapterRepository::createAuthAdapter($this->getCurrentAuthMode());
   }
 
   public function getCurrentAuthMode($allowGuess = true)
   {
     $authMode = $this->getAttribute('auth_mode', null, 'opSecurityUser');
 
-    $authModes = $this->getAuthModes();
+    $authModes = AuthAdapterRepository::getAuthModes();
     if (!in_array($authMode, $authModes))
     {
       if ($allowGuess)

@@ -19,7 +19,6 @@
 class opSecurityUser extends opAdaptableUser
 {
   protected
-    $authAdapters = array(),
     $serializedMember = '';
 
   /**

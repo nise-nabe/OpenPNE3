@@ -348,7 +348,7 @@ abstract class opAuthAdapter
   public function isInvitedRegisterable()
   {
     // is this adapter allowed registration?
-    if (!in_array($this->getAuthModeName(), sfContext::getInstance()->getUser()->getAuthModes()))
+    if (!in_array($this->getAuthModeName(), AuthAdapterRepository::getAuthModes()))
     {
       return false;
     }
