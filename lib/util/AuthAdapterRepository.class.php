@@ -67,7 +67,6 @@ class AuthAdapterRepository
     return self::$authAdapters[$authMode];
   }
 
-
   public static function getAuthAdapterClassName($authMode)
   {
     return 'opAuthAdapter'.ucfirst($authMode);
