@@ -2,8 +2,7 @@
 
 class AuthAdapterRepository
 {
-  protected
-    $authAdapters = array();
+  protected static $authAdapters = array();
 
   public static function getAuthAdapters()
   {
