@@ -36,8 +36,6 @@ abstract class opAdaptableUser extends opBaseSecurityUser
     {
       $this->setCurrentAuthMode($authMode);
     }
-
-    AuthAdapterRepository::createAuthAdapter($this->getCurrentAuthMode());
   }
 
   public function getAuthAdapter($authMode = null)
@@ -58,7 +56,6 @@ abstract class opAdaptableUser extends opBaseSecurityUser
   public function setCurrentAuthMode($authMode)
   {
     $this->setAttribute('auth_mode', $authMode, 'opSecurityUser');
-    AuthAdapterRepository::createAuthAdapter($this->getCurrentAuthMode());
   }
 
   public function getCurrentAuthMode($allowGuess = true)
